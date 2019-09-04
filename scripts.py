@@ -73,26 +73,20 @@ def main():
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "project.settings")
     django.setup()
     from datacenter.models import Schoolkid, Mark, Chastisement, Lesson, Commendation
+    global Schoolkid
     global Mark
     global Chastisement
     global Lesson
     global Commendation
-    global Schoolkid
-
-
+    
+    #  customizations
     child = get_child("Хохлова Ульяна Афанасьевна")
-
+    
     fix_marks(schoolkid=child)
-
     remove_chastisements(schoolkid=child)
+    create_commendation(child, 'Русский язык')
 
-
-    f = create_commendation(child, 'Русский язык')
-
-    print(f)
-
-
-
+    
 if __name__ == '__main__':
     main()
 
