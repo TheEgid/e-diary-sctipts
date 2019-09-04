@@ -1,0 +1,14 @@
+__pycache__/
+*.py[cod]
+*$py.class
+
+*.checkpoint
+*.env
+*.pickle
+*.log
+*.txt
+*.json
+*.html
+!requirements.txt
+!compliments.txt
+

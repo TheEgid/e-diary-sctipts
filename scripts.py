@@ -11,8 +11,8 @@ def read_file(filename):
 
 def get_random_compliment(filename='compliments.txt'):
     compliments = read_file(filename)
-    compliments_list = [compliment.strip() for compliment in compliments]
-    return random.sample(compliments_list, k=1)[0]
+    compliment = random.sample(compliments, k=1)[0]
+    return compliment.strip()
 
 
 def fix_marks(schoolkid, bad_mark_limit=3, good_mark=5):
@@ -47,26 +47,20 @@ def get_child(_child_name):
 
 
 def create_commendation(schoolkid, commendation_subject):
-    lessons = Lesson.objects.filter(
+    commendation_lesson = Lesson.objects.filter(
         year_of_study=schoolkid.year_of_study,
         group_letter=schoolkid.group_letter,
         subject__title=commendation_subject,
-    ).order_by('-date')
-    commendation_lesson = lessons[0]
+    ).order_by('-date').first()
     compliment = get_random_compliment()
-    if not Commendation.objects.filter(
-            schoolkid=schoolkid,
-            subject=commendation_lesson.subject,
-            teacher=commendation_lesson.teacher,
-            created=commendation_lesson.date,
-    ):
-        Commendation.objects.create(
-            schoolkid=schoolkid,
-            text=compliment,
-            created=commendation_lesson.date,
-            subject=commendation_lesson.subject,
-            teacher=commendation_lesson.teacher,
-        )
+	Commendation.objects.update_or_create(
+			schoolkid=schoolkid,
+			text=compliment,
+			created=commendation_lesson.date,
+			subject=commendation_lesson.subject,
+			teacher=commendation_lesson.teacher,
+	)
+
 
 
 def main():
