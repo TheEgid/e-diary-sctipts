@@ -53,7 +53,7 @@ lesson_subject and lesson_teacher."""
         year_of_study=schoolkid.year_of_study,
         group_letter=schoolkid.group_letter,
         subject__title=commendation_subject,
-    ).order_by('-date').first()
+    ).order_by('date').last()
     compliment = get_random_compliment()
     try:
         Commendation.objects.get(
@@ -85,11 +85,11 @@ def main():
     global Commendation
 
     #  customizations
-    child = get_child("Голубев Гремислав Антипович")
+    child = get_child("Лукина Олимпиада Владиславовна")
 
     fix_marks(schoolkid=child)
     remove_chastisements(schoolkid=child)
-    create_commendation(child, 'Русский язык')
+    create_commendation(child, 'Музыка')
 
 
 if __name__ == '__main__':
