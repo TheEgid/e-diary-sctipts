@@ -47,31 +47,19 @@ def get_child(_child_name):
 
 
 def create_commendation(schoolkid, commendation_subject):
-    """Only one commendation for case of combination schoolkid, lesson_date,
-lesson_subject and lesson_teacher."""
     commendation_lesson = Lesson.objects.filter(
         year_of_study=schoolkid.year_of_study,
         group_letter=schoolkid.group_letter,
         subject__title=commendation_subject,
     ).order_by('date').last()
     compliment = get_random_compliment()
-    try:
-        Commendation.objects.get(
-            schoolkid=schoolkid,
-            created=commendation_lesson.date,
-            subject=commendation_lesson.subject,
-            teacher=commendation_lesson.teacher,
-        )
-    except Commendation.MultipleObjectsReturned:
-        pass
-    except Commendation.DoesNotExist:
-        Commendation.objects.create(
-            schoolkid=schoolkid,
-            created=commendation_lesson.date,
-            subject=commendation_lesson.subject,
-            teacher=commendation_lesson.teacher,
-            text=compliment,
-        )
+    Commendation.objects.get_or_create(
+        schoolkid=schoolkid,
+        created=commendation_lesson.date,
+        subject=commendation_lesson.subject,
+        teacher=commendation_lesson.teacher,
+        text=compliment
+    )
 
 
 def main():
@@ -85,7 +73,7 @@ def main():
     global Commendation
 
     #  customizations
-    child = get_child("Лукина Олимпиада Владиславовна")
+    child = get_child("Рогов Стоян Якубович")
 
     fix_marks(schoolkid=child)
     remove_chastisements(schoolkid=child)
